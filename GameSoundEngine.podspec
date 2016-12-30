@@ -35,9 +35,7 @@ Pod::Spec.new do |s|
   # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
 
-#  s.source       = { :git => "http://EXAMPLE/GameSoundEngine.git", :tag => "#{s.version}" }
-
-  s.source       = {  :path => '.' }
+  s.source       = { :git => "https://github.com/tkier/GameSoundEngine.git", :tag => "#{s.version}" }
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
