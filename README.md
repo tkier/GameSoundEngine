@@ -130,7 +130,7 @@ GameSoundEngine also supports randomly playing different variations of the same 
 Now every time `fireworkSound.play()` is called the sound engine will randomly play either fireworkA.caf, fireworkB.caf, or fireworkC.caf. Note that the volume and pitch are also randomly varied as specified in the SoundSFX vary parameters. The overall effect creates a lot of sonic variety.
 
 #### Playing Sound Effects as SpriteKit Actions
-The framework also includes an extension to SpriteKit SKAction to allow playing SoundSFX objects as an SKAction. This makes for easier synchronization with animations in SKAction sequences and groups.
+The framework also includes an extension to SpriteKit SKAction to allow playing SoundSFX objects as an SKAction. This makes it easier to synchronization the SoundSFX with animations in SKAction sequences and groups.
 
 ```swift
 	let fireWorkSoundAction = SKAction.playSoundSFX(fireworkSound)
