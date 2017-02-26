@@ -312,6 +312,7 @@
 				E242B71C1E0E566B0047B33B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

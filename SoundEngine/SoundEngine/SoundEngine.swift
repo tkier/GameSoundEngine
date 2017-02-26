@@ -95,7 +95,7 @@ public class SoundEngine {
     
     /**
      
-       Plays background music. Only one background music file may be played at a time. If background
+       Plays background music. Only one background music file may be played at a time. If background music 
        is already playing it will be stopped before the new music file is played.
      
        Parameters:
@@ -130,7 +130,47 @@ public class SoundEngine {
             }
         }
     }
-    
+
+    /**
+     
+     Plays a random background music file from an array of sound files. Only one background music file may be played at a time.
+     If background music is already playing it will be stopped before the new music file is played.
+     
+     Parameters:
+     - soundFiles : Array of sound file names
+     - loop       : When true will loop playing sound files until the music is stopped or another music file is played. 
+                    Each loop will play a random file from the soundFiles array.
+     
+     */
+    public func playRandomBackgroundMusic(_ soundFiles: [String], loop: Bool = true) {
+        
+        if !alreadyStarted {
+            startEngine()
+        }
+        
+        if AVAudioSession.sharedInstance().secondaryAudioShouldBeSilencedHint {
+            backgroundMusicPlayer.volume = 0.0
+        } else {
+            backgroundMusicPlayer.volume = backgroundMusicVolume
+        }
+        
+        let soundFile = soundFiles[Int.random(soundFiles.count)]
+        if let path = Bundle.main.path(forResource: soundFile, ofType: nil) {
+            let fileURL = NSURL.fileURL(withPath: path)
+            if let file = try? AVAudioFile(forReading: fileURL) {
+                stopFadeOut()
+                backgroundMusicPlayer.stop()
+                backgroundMusicPlayer.volume = backgroundMusicVolume
+                if loop {
+                    loopRandomBackgroundMusic(file: file, soundFiles: soundFiles)
+                } else {
+                    backgroundMusicPlayer.scheduleFile(file, at: nil, completionHandler: nil)
+                }
+                backgroundMusicPlayer.play()
+            }
+        }
+    }
+
     /**
      
        Stops the background music.
@@ -333,6 +373,19 @@ public class SoundEngine {
         
         backgroundMusicPlayer.scheduleFile(file, at: nil, completionHandler: { [weak self] in
             self?.loopBackgroundMusic(file: file)
+        })
+    }
+    
+    private func loopRandomBackgroundMusic(file: AVAudioFile, soundFiles: [String]) {
+        
+        backgroundMusicPlayer.scheduleFile(file, at: nil, completionHandler: { [weak self] in
+            let soundFile = soundFiles[Int.random(soundFiles.count)]
+            if let path = Bundle.main.path(forResource: soundFile, ofType: nil) {
+                let fileURL = NSURL.fileURL(withPath: path)
+                if let file = try? AVAudioFile(forReading: fileURL) {
+                    self?.loopRandomBackgroundMusic(file: file, soundFiles: soundFiles)
+                }
+            }
         })
     }
     
