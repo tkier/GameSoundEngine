@@ -7,7 +7,7 @@ A simple, easy to use sound engine written in Swift, designed for iOS games. It 
 The GameSoundEngine framework can be installed using CocoaPods. Add the following line to your project pod file and the run "pod install".
 
 ```text
-	pod 'GameSoundEngine', '~> 1.0.0'
+	pod 'GameSoundEngine', '~> 1.1.0'
 ```
 
 ## Using GameSoundEngine
@@ -74,6 +74,14 @@ To stop the background music call stopBackgroundMusic:
 The fadeOut parameter is optional and defaults to true.
 
 Note that only one background music file can be played at a time. Calling playBackgroundMusic while background music is already playing will stop the current music before starting the new background music.
+
+GameSoundEngine can also play a random selection from an array of background music files. 
+
+```swift
+	SoundEngine.shared.playRandomBackgroundMusic(["music1.m4a", "music2.m4a", "music3.m4a"], loop: true)
+```
+
+If the loop parameter is set to true, each loop will play a different random selection from the array of music files.
 
 #### Sound Effects
 To play a sound effect you first need to create an instance of the SoundSFX class specifying the name of the sound file resource in the initializer:
