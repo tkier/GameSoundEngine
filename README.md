@@ -7,7 +7,7 @@ A simple, easy to use sound engine written in Swift, designed for iOS games. It 
 The GameSoundEngine framework can be installed using CocoaPods. Add the following line to your project pod file and the run "pod install".
 
 ```text
-	pod 'GameSoundEngine', '~> 1.1.0'
+	pod 'GameSoundEngine', '~> 1.2'
 ```
 
 ## Using GameSoundEngine
@@ -161,6 +161,7 @@ For sound effects: CAF format, linear PCM, little-endian, 16-bit. To convert a f
 	afconvert -f caff -d LEI16 input_file
 ```
 
+For best performance use the same file format for all sound effects. Playing sounds with different file formats will require GameSoundEngine to dynamically reconfigure its playback nodes to match the different file format. If all files are the same format, no reconfiguration of the playback nodes is necessary giving better performance.
 
 ## License
 Copyright 2016 Endless Wave Software LLC

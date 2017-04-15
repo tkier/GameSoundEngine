@@ -6,7 +6,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "GameSoundEngine"
-  s.version      = "1.1.1"
+  s.version      = "1.2"
   s.summary      = "A simple, easy to use sound engine written in Swift, designed for iOS games."
 
   s.description  = "GameSoundEngine supports playing background music and multiple simultaneous sound effects. To help ensure sonic variety, sound effects can be played with random pitch and volume levels, as well as randomly from a group of sound effects."
