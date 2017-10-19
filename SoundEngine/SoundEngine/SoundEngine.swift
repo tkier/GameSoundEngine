@@ -293,27 +293,28 @@ public class SoundEngine {
                 let fileURL = NSURL.fileURL(withPath: path)
                 
                 if let file = try? AVAudioFile(forReading: fileURL) {
-                    let buffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))
-                    do {
-                        try file.read(into: buffer)
-                    } catch _ {
-                        completionHandler(nil)
-                        return
-                    }
-                    
-                    var maxVolume : Float?
-                    var minVolume : Float?
-                    if let db = volumeVary {
-                        maxVolume = round(1000000000.0 * pow(10.0, db/20.0)) / 1000000000.0
-                        minVolume = round(1000000000.0 * pow(10.0, -db/20.0)) / 1000000000.0
-                    }
-                    
-                    playClosure = { [weak self] in
-                        self?.playBufferOnNextAvailablePlayer(buffer: buffer,
-                                                              volume: volume,
-                                                              minVolume: minVolume,
-                                                              maxVolume: maxVolume,
-                                                              pitchVary: pitchVary)
+                    if let buffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length)) {
+                        do {
+                            try file.read(into: buffer)
+                        } catch _ {
+                            completionHandler(nil)
+                            return
+                        }
+                        
+                        var maxVolume : Float?
+                        var minVolume : Float?
+                        if let db = volumeVary {
+                            maxVolume = round(1000000000.0 * pow(10.0, db/20.0)) / 1000000000.0
+                            minVolume = round(1000000000.0 * pow(10.0, -db/20.0)) / 1000000000.0
+                        }
+                        
+                        playClosure = { [weak self] in
+                            self?.playBufferOnNextAvailablePlayer(buffer: buffer,
+                                                                  volume: volume,
+                                                                  minVolume: minVolume,
+                                                                  maxVolume: maxVolume,
+                                                                  pitchVary: pitchVary)
+                        }
                     }
                 }
             }
