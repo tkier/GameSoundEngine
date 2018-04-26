@@ -19,7 +19,7 @@
 import Foundation
 import SpriteKit
 
-public protocol PlayableSoundSFX {
+@objc public protocol PlayableSoundSFX {
     func play()
 }
 
@@ -32,7 +32,7 @@ public let kPitchVaryMedium: Float = 200   // 2 semitone
 public let kPitchVaryLarge: Float = 300    // 3 semitone
 
 /// Sound effect class for playing a short sound.
-open class SoundSFX : PlayableSoundSFX {
+open class SoundSFX : NSObject, PlayableSoundSFX {
     
     private var playSound: (() -> Void)?
     private var playOnLoad = false
@@ -50,12 +50,12 @@ open class SoundSFX : PlayableSoundSFX {
             - pitchVary: The amount the pitch should randomly vary when played. Specified in cents (1 musical semitone = 100 cents, 1 octave = 1200 cents).
     
     */
-    public init(_ soundFile: String, volume: Float = 1.0, volumeVary: Float? = nil, pitchVary: Float? = nil) {
-        
+    @objc public init(_ soundFile: String, volume: Float = 1.0, volumeVary: NSNumber? = nil, pitchVary: NSNumber? = nil) {
+        super.init()
         SoundEngine.shared.loadSound(soundFile: soundFile,
                                      volume: volume,
-                                     volumeVary: volumeVary,
-                                     pitchVary: pitchVary,
+                                     volumeVary: volumeVary?.floatValue,
+                                     pitchVary: pitchVary?.floatValue,
                                      completionHandler: { [weak self] playCallBack in
                                          guard let strongSelf = self else { return }
                                          strongSelf.playSound = playCallBack

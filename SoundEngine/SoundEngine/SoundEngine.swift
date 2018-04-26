@@ -20,7 +20,7 @@ import Foundation
 import AVFoundation
 
 /// A simple, easy to use sound engine designed for iOS games
-public class SoundEngine {
+public class SoundEngine : NSObject{
     
     public static let shared = SoundEngine()
 
@@ -39,7 +39,7 @@ public class SoundEngine {
     private var fadeOutStartVolume = 1.0
     private let fadeOutLength = 1.5
     
-    private init() { }
+    private override init() { }
     
     /// Volume control for background music. Valid values are 0.0 - 1.0
     public var backgroundMusicVolume: Float = 1.0 {
