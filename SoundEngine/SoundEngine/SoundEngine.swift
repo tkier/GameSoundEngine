@@ -197,23 +197,22 @@ public class SoundEngine {
     private func configureAudioSession() {
         
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryAmbient)
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
         } catch {
             
         }
-        
         let nc = NotificationCenter.default
-        nc.addObserver(forName:NSNotification.Name.AVAudioSessionSilenceSecondaryAudioHint,
+        nc.addObserver(forName:AVAudioSession.silenceSecondaryAudioHintNotification,
                        object:nil,
                        queue:nil,
                        using:catchAudioHintNotification)
         
-        nc.addObserver(forName:NSNotification.Name.AVAudioSessionInterruption,
+        nc.addObserver(forName:AVAudioSession.interruptionNotification,
                        object:nil,
                        queue:nil,
                        using:catchAudioSessionInterruptionNotification)
         
-        nc.addObserver(forName:NSNotification.Name.UIApplicationDidBecomeActive,
+        nc.addObserver(forName:UIApplication.didBecomeActiveNotification,
                        object:nil,
                        queue:nil,
                        using:catchDidBecomeActiveNotification)
@@ -223,7 +222,7 @@ public class SoundEngine {
         
         guard let userInfo = notification.userInfo,
             let audioHintType  = userInfo[AVAudioSessionSilenceSecondaryAudioHintTypeKey] as? UInt,
-            let audioHint = AVAudioSessionSilenceSecondaryAudioHintType(rawValue:audioHintType)
+            let audioHint = AVAudioSession.SilenceSecondaryAudioHintType(rawValue:audioHintType)
             else { return }
         
         switch audioHint {
@@ -240,7 +239,7 @@ public class SoundEngine {
         
         guard let userInfo = notification.userInfo,
             let interruptionType  = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
-            let interruption = AVAudioSessionInterruptionType(rawValue:interruptionType)
+            let interruption = AVAudioSession.InterruptionType(rawValue:interruptionType)
             else { return }
         
         switch interruption {
@@ -293,7 +292,7 @@ public class SoundEngine {
                 let fileURL = NSURL.fileURL(withPath: path)
                 
                 if let file = try? AVAudioFile(forReading: fileURL) {
-                    let buffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))
+                    let buffer = AVAudioPCMBuffer(pcmFormat: file.processingFormat, frameCapacity: AVAudioFrameCount(file.length))!
                     do {
                         try file.read(into: buffer)
                     } catch _ {
@@ -403,7 +402,7 @@ public class SoundEngine {
         fadeOutStartVolume = Double(backgroundMusicPlayer.volume)
         
         fadeOutDisplayLink = CADisplayLink(target: self, selector: #selector(displayLinkDidFire))
-        fadeOutDisplayLink?.add(to: RunLoop.main, forMode: RunLoopMode.defaultRunLoopMode)
+        fadeOutDisplayLink?.add(to: RunLoop.main, forMode: .default)
     }
     
     @objc private func displayLinkDidFire() {
