@@ -106,7 +106,7 @@ public class SoundEngine {
          - loop      : When true will loop the sound file until the music is stopped or another music file is played.
     
     */
-    public func playBackgroundMusic(_ soundFile: String, loop: Bool = true) {
+    public func playBackgroundMusic(_ soundFile: String, in bundle: Bundle = .main, loop: Bool = true) {
         
         if !alreadyStarted {
             startEngine()
@@ -118,7 +118,7 @@ public class SoundEngine {
             backgroundMusicPlayer.volume = backgroundMusicVolume
         }
         
-        if let path = Bundle.main.path(forResource: soundFile, ofType: nil) {
+        if let path = bundle.path(forResource: soundFile, ofType: nil) {
             let fileURL = NSURL.fileURL(withPath: path)
             if let file = try? AVAudioFile(forReading: fileURL) {
                 stopFadeOut()
@@ -145,7 +145,7 @@ public class SoundEngine {
                     Each loop will play a random file from the soundFiles array.
      
      */
-    public func playRandomBackgroundMusic(_ soundFiles: [String], loop: Bool = true) {
+    public func playRandomBackgroundMusic(_ soundFiles: [String], in bundle: Bundle = .main, loop: Bool = true) {
         
         if !alreadyStarted {
             startEngine()
@@ -158,7 +158,7 @@ public class SoundEngine {
         }
         
         let soundFile = soundFiles[Int.random(soundFiles.count)]
-        if let path = Bundle.main.path(forResource: soundFile, ofType: nil) {
+        if let path = bundle.path(forResource: soundFile, ofType: nil) {
             let fileURL = NSURL.fileURL(withPath: path)
             if let file = try? AVAudioFile(forReading: fileURL) {
                 stopFadeOut()
@@ -275,10 +275,11 @@ public class SoundEngine {
     }
     
     internal func loadSound(soundFile: String,
-                   volume: Float,
-                   volumeVary: Float? = nil,
-                   pitchVary: Float? = nil,
-                   completionHandler: @escaping ((() -> Void)?) -> Void)
+                            in bundle: Bundle,
+                            volume: Float,
+                            volumeVary: Float? = nil,
+                            pitchVary: Float? = nil,
+                            completionHandler: @escaping ((() -> Void)?) -> Void)
     {
         var playClosure : (() -> Void)? = nil
         
@@ -288,7 +289,7 @@ public class SoundEngine {
         
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             
-            if let path = Bundle.main.path(forResource: soundFile, ofType: nil) {
+            if let path = bundle.path(forResource: soundFile, ofType: nil) {
                 let fileURL = NSURL.fileURL(withPath: path)
                 
                 if let file = try? AVAudioFile(forReading: fileURL) {
@@ -381,11 +382,11 @@ public class SoundEngine {
         })
     }
     
-    private func loopRandomBackgroundMusic(file: AVAudioFile, soundFiles: [String]) {
+    private func loopRandomBackgroundMusic(file: AVAudioFile, soundFiles: [String], in bundle: Bundle = .main) {
         
         backgroundMusicPlayer.scheduleFile(file, at: nil, completionHandler: { [weak self] in
             let soundFile = soundFiles[Int.random(soundFiles.count)]
-            if let path = Bundle.main.path(forResource: soundFile, ofType: nil) {
+            if let path = bundle.path(forResource: soundFile, ofType: nil) {
                 let fileURL = NSURL.fileURL(withPath: path)
                 if let file = try? AVAudioFile(forReading: fileURL) {
                     self?.loopRandomBackgroundMusic(file: file, soundFiles: soundFiles)

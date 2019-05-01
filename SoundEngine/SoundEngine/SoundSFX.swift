@@ -50,9 +50,10 @@ open class SoundSFX : PlayableSoundSFX {
             - pitchVary: The amount the pitch should randomly vary when played. Specified in cents (1 musical semitone = 100 cents, 1 octave = 1200 cents).
     
     */
-    public init(_ soundFile: String, volume: Float = 1.0, volumeVary: Float? = nil, pitchVary: Float? = nil) {
+    public init(_ soundFile: String, in bundle: Bundle = .main, volume: Float = 1.0, volumeVary: Float? = nil, pitchVary: Float? = nil) {
         
         SoundEngine.shared.loadSound(soundFile: soundFile,
+                                     in: bundle,
                                      volume: volume,
                                      volumeVary: volumeVary,
                                      pitchVary: pitchVary,
