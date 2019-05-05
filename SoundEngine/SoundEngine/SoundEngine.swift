@@ -203,7 +203,7 @@ public class SoundEngine {
     private func configureAudioSession() {
         
         do {
-            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.ambient)
+            try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
         } catch {
             
         }
