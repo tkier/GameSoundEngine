@@ -130,7 +130,11 @@ public class SoundEngine {
                     backgroundMusicPlayer.scheduleFile(file, at: nil, completionHandler: nil)
                 }
                 backgroundMusicPlayer.play()
+            } else {
+                NSLog("Failedto load audio data for sound file at %@", path)
             }
+        } else {
+            NSLog("Failed to load sound file %@", soundFile)
         }
     }
 
@@ -171,6 +175,8 @@ public class SoundEngine {
                 }
                 backgroundMusicPlayer.play()
             }
+        } else {
+            NSLog("Failed to load sound file %@", soundFile)
         }
     }
 
@@ -315,7 +321,11 @@ public class SoundEngine {
                                                               maxVolume: maxVolume,
                                                               pitchVary: pitchVary)
                     }
+                } else {
+                    NSLog("Failed to load sound data from %@", soundFile)
                 }
+            } else {
+                NSLog("Failed to load sound file %@", soundFile)
             }
             
             DispatchQueue.main.async {
