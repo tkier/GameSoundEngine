@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   # ――― Platform Specifics ――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
   #
 
-  s.platform     = :ios, "9.0"
+  s.platform     = :ios, "10.0"
 
 
 
