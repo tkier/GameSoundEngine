@@ -88,9 +88,6 @@ public class SoundEngine {
             
             engine.attach(player)
             engine.attach(pitch)
-            
-            engine.connect(player, to: pitch, format: nil)
-            engine.connect(pitch, to: sfxMixer, format: nil)
         }
         
         restartEngine()
@@ -353,12 +350,11 @@ public class SoundEngine {
         }
         
         let pitch = pitchNodes[activePlayerIndex]
-        if !player.outputFormat(forBus: 0).isEqual(buffer.format) {
-            engine.disconnectNodeOutput(pitch)
-            engine.disconnectNodeOutput(player)
-            engine.connect(player, to: pitch, format: buffer.format)
-            engine.connect(pitch, to: sfxMixer, format: buffer.format)
-        }
+
+        engine.disconnectNodeOutput(pitch)
+        engine.disconnectNodeOutput(player)
+        engine.connect(player, to: pitch, format: buffer.format)
+        engine.connect(pitch, to: sfxMixer, format: buffer.format)
 
         if let cents = pitchVary {
             pitch.pitch = Float(Int.random(min: Int(-cents * 100.0), max: Int(cents * 100.0))) / 100.0
@@ -370,6 +366,8 @@ public class SoundEngine {
         player.scheduleBuffer(buffer, completionHandler:{
             DispatchQueue.main.async {
                 player.stop()
+                self.engine.disconnectNodeOutput(pitch)
+                self.engine.disconnectNodeOutput(player)
             }
         })
         player.play()
